@@ -262,7 +262,7 @@ int main()
 
             // Inbetween D_{3k}, D_{3k+1} + Inside D_{3k + 1}
             for(int i=lb[d-1]; i<ub[d-1]-1; i++) edges.pb({lb[d-2], i});
-            for(int i=1; i<=(r - x - 2)/2; i++) for(int j=0; j<r-1; j++) edges.pb({lb[d-1] + j, lb[d-1] + (j + i) % (r - 1)});
+            for(int i=2; i<=(r - x)/2; i++) for(int j=0; j<r-1; j++) edges.pb({lb[d-1] + j, lb[d-1] + (j + i) % (r - 1)});
             for(int i=lb[d-1]; i<lb[d-1]+r-x; i++) edges.pb({i, ub[d-1]-1});
             for(int i=lb[d-1]+r-x; i<ub[d-1]-1; i+=2) edges.pb({i, i+1});
 
