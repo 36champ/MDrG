@@ -14,7 +14,7 @@ typedef pair<ll, ll> pll;
 void output(vvll &edges)
 {
     ofstream out("graph.dot");
-    out << "digraph {\n";
+    out << "strict graph {\n";
     for(vll e: edges)
     {
         out << e[0] << " -- " << e[1] << " [color = red]\n";
@@ -261,10 +261,21 @@ int main()
             for(int l=4; l<d-1; l+=3) for(int i=lb[l]; i<ub[l]; i++) for(int j=i+1; j<ub[l]; j++) edges.pb({i, j});
 
             // Inbetween D_{3k}, D_{3k+1} + Inside D_{3k + 1}
-            for(int i=lb[d-1]; i<ub[d-1]-1; i++) edges.pb({lb[d-2], i});
-            for(int i=2; i<=(r - x)/2; i++) for(int j=0; j<r-1; j++) edges.pb({lb[d-1] + j, lb[d-1] + (j + i) % (r - 1)});
-            for(int i=lb[d-1]; i<lb[d-1]+r-x; i++) edges.pb({i, ub[d-1]-1});
-            for(int i=lb[d-1]+r-x; i<ub[d-1]-1; i+=2) edges.pb({i, i+1});
+            if((r - x) % 2 == 0)
+            {
+                for(int i=lb[d-1]; i<ub[d-1]-1; i++) edges.pb({lb[d-2], i});
+                for(int i=1; i<=(r - x - 2)/2; i++) for(int j=0; j<r-1; j++) edges.pb({lb[d-1] + j, lb[d-1] + (j + i) % (r - 1)});
+                for(int i=lb[d-1]; i<lb[d-1]+(r-x)/2; i++) {edges.pb({i, ub[d-1]-1}); edges.pb({i + r / 2, ub[d-1]-1});}
+                for(int i=(r-x)/2; i<r/2; i++) edges.pb({lb[d-1] + i, lb[d-1] + i + r / 2});
+            }
+            else
+            {
+                for(int i=lb[d-1]; i<ub[d-1]-1; i++) edges.pb({lb[d-2], i});
+                for(int i=2; i<=(r - x - 2)/2; i++) for(int j=0; j<r-1; j++) edges.pb({lb[d-1] + j, lb[d-1] + (j + i) % (r - 1)});
+                for(int i=0; i<r/2-1; i++) edges.pb({lb[d-1] + i, lb[d-1] + i + r / 2 - 1});
+                for(int i=lb[d-1]; i<lb[d-1]+r-x; i++) edges.pb({i, ub[d-1]-1});
+                for(int i=lb[d-1]+r-x; i<ub[d-1]-1; i+=2) edges.pb({i, i+1});
+            }
 
             // Inbetween D_1, D_2 + Inside D-1
             for(int i=lb[1]; i<ub[1]-1; i++) {edges.pb({i, ub[1] - 1}); edges.pb({i, lb[2]});}
